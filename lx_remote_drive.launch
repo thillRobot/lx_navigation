@@ -23,7 +23,7 @@
   />
 
   <node
-    pkg="lx_setup_tf"
+    pkg="lx_navigation"
     name="tf_broadcaster"
     type="tf_broadcaster"
   />

@@ -19,7 +19,7 @@
         args="0.0 0.0 0.0 0.0 0.0 0.0 map odom 100"
     />
 	<node
-        pkg="lx_setup_tf"
+        pkg="lx_navigation"
         name="tf_broadcaster"
         type="tf_broadcaster"
     />
