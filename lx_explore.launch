@@ -1,0 +1,57 @@
+<launch>
+    <!-- Set to your sensor's range -->
+    <arg name="sensor_range" default="0.3"/>
+
+    <node pkg="frontier_exploration" type="explore_client" name="explore_client" output="screen"/>
+
+    <node pkg="frontier_exploration" type="explore_server" name="explore_server" output="screen" >
+
+        <param name="frequency" type="double" value="2.0"/>
+        <param name="goal_aliasing" type="double" value="$(arg sensor_range)"/>
+
+        #All standard costmap_2d parameters as in move_base, other than BoundedExploreLayer
+        <rosparam ns="explore_costmap" subst_value="true">
+            footprint: [[0.35, 0.25], [-0.35, 0.25], [-0.35, -0.25], [0.35,-0.25]]
+            #robot_radius: 0.10
+            obstacle_range: 0.35
+            raytrace_range: 0.45
+
+            transform_tolerance: 1.0
+            update_frequency: 2.0
+            publish_frequency: 2.0
+
+            #must match incoming static map
+            global_frame: map
+            robot_base_frame: base_link
+            resolution: 0.05
+
+            rolling_window: false
+            track_unknown_space: true
+
+            plugins:
+                - {name: static_map,       type: "costmap_2d::StaticLayer"}
+                - {name: obstacles,        type: "costmap_2d::VoxelLayer"}
+                - {name: inflation,        type: "costmap_2d::InflationLayer"}
+                - {name: explore_boundary, type: "frontier_exploration::BoundedExploreLayer"}
+
+            static_map:
+                observation_sources: laser_scan_sensor point_cloud_sensor
+                laser_scan_sensor: {sensor_frame: laser_frame, data_type: LaserScan, topic: RosAria/S3Series_1_laserscan, marking: true, clearing: true}
+                point_cloud_sensor: {sensor_frame: sonar_frame, data_type: PointCloud, topic: RosAria/sonar, marking: true, clearing: true}
+            obstacles:
+                observation_sources: laser_scan_sensor
+                laser_scan_sensor:  {sensor_frame: laser_frame, data_type: LaserScan, topic: RosAria/S3Series_1_laserscan, marking: true, clearing: true}
+
+            inflation:
+                inflation_radius: 0.15
+
+            explore_boundary:
+                resize_to_boundary: false
+                frontier_travel_point: middle
+                #set to false for gmapping, true if re-exploring a known area
+                explore_clear_space: false
+
+        </rosparam>
+    </node>
+
+</launch>

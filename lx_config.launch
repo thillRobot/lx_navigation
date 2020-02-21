@@ -1,0 +1,87 @@
+<launch>
+ <param name="param" value="$(arg ros_ip)"/>
+ 
+ <!--  <master auto="start"/> -->
+  <env name="ROS_IP" value="$(arg ros_ip)"/>		
+ <!--  <param name="/use_sim_time" value="true" /> --><!-- This line causes an error -->	 
+    
+  <!-- TURN ON THE ROBOT--> 	
+  <node 
+    name="RosAria" 
+    pkg="rosaria" 
+    type="RosAria" 
+    respawn="false" 
+    output="screen" 
+    args="/RosAria/cmd_vel:=cmd_vel">
+    args="/RosAria/S3Series_1_laserscan:=scan">
+    <param name="port" value="/dev/ttyUSB0" />
+    <param name="baud" value="57600" />
+    <param name="publish_aria_lasers" value="true" />
+  </node>
+	
+  <node
+    pkg="lx_setup_tf"     
+    name="tf_broadcaster" 
+    type="tf_broadcaster"   
+  />
+		
+  <!--USE A LASER FILTER --> 
+  <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter">
+    <rosparam command="load" file="$(find lx_2dnav)/params/laser_config.yaml" />
+    <remap from="scan" to="/RosAria/S3Series_1_laserscan" />
+  </node>
+
+  <!-- load a blank map -->
+  <!-- <arg name="map_file" default="$(find lx_2dnav)/maps/blankmap.yaml"/> -->
+  <!-- <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" /> -->
+
+  <!-- TURN ON THE NAVIGATION -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen" args="odom:=/RosAria/pose">
+    <param name="controller_frequency" value="2.0"/>
+    <param name="base_global_planner" value="global_planner/GlobalPlanner"/>
+    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS"/> 
+
+    <rosparam file="$(find lx_2dnav)/params/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find lx_2dnav)/params/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find lx_2dnav)/params/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find lx_2dnav)/params/global_costmap_params.yaml" command="load" />
+
+    <rosparam file="$(find lx_2dnav)/params/global_planner_params.yaml" command="load" ns="base_global_planner" />
+    <rosparam file="$(find lx_2dnav)/params/base_local_planner_params.yaml" command="load" />
+  </node>
+
+  <!-- TURN ON THE MAPPING NODE -->
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+    <remap from="scan" to="scan_filtered"/>
+    <param name="odom_frame" value="odom"/>
+    <param name="map_update_interval" value="30.0"/>
+    <param name="maxUrange" value="16.0"/>
+    <param name="sigma" value="0.05"/>
+    <param name="kernelSize" value="1"/>
+    <param name="lstep" value="0.05"/>
+    <param name="astep" value="0.05"/>
+    <param name="iterations" value="5"/>
+    <param name="lsigma" value="0.075"/>
+    <param name="ogain" value="3.0"/>
+    <param name="lskip" value="0"/>
+    <param name="srr" value="0.01"/>
+    <param name="srt" value="0.02"/>
+    <param name="str" value="0.01"/>
+    <param name="stt" value="0.02"/>
+    <param name="linearUpdate" value="0.5"/>
+    <param name="angularUpdate" value="0.436"/>
+    <param name="temporalUpdate" value="-1.0"/>
+    <param name="resampleThreshold" value="0.5"/>
+    <param name="particles" value="80"/>
+    <param name="xmin" value="-50.0"/>
+    <param name="ymin" value="-50.0"/>
+    <param name="xmax" value="50.0"/>
+    <param name="ymax" value="50.0"/>
+    <param name="delta" value="0.05"/>
+    <param name="llsamplerange" value="0.01"/>
+    <param name="llsamplestep" value="0.01"/>
+    <param name="lasamplerange" value="0.005"/>
+    <param name="lasamplestep" value="0.005"/>
+  </node>	
+
+</launch>
