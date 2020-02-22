@@ -7,13 +7,14 @@ Here is how to Make a Map with LX, ROS and gmapping.
 
 Replace these things:
 
-'''
+```
 <laserscan> your laser topic name
 <mapname> what you want you map to be called
 <robotip> IP address of the robot
 <remoteip> computer name of the control computer
 <remotecomputer> computer name of the control computer
-'''
+```
+
 However, some of these commands are specific to the robot (LX)
 
 1) Record the Laser data with a robot to make a map.
