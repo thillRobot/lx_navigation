@@ -16,56 +16,56 @@ Replace these things:
 <remotecomputer> computer name of the control computer
 ```
 
-1) Record the Laser data with a robot to make a map.
+### 1) Record the Laser data with a robot to make a map.
 
-  i)  Turn on the navigation and mapping nodes
+  #### i)  Turn on the navigation and mapping nodes
 
   `$ roslaunch lx_2dnav lx_map.launch`
 
-  ii) Change to the directory where you want to save the data
+  #### ii) Change to the directory where you want to save the data
 
   `$ cd ~/<wspname>`
 
-  iii) Start recording data
+  #### iii) Start recording data
 
   `$ rosbag record -O <mapname> <laserscan> /tf`  
 
-  iii) Now, starting at the origin record a map by driving the robot using keyboard drive
+  #### iii) Now, starting at the origin record a map by driving the robot using keyboard drive
 
   `$ rosrun teleop_twist_keyboard teleop_twist_keyboard.py`
 
-  iV) close all processes from step 1, you should now have a bag file
+  #### iV) close all processes from step 1, you should now have a bag file
 
 
-2) Process the map data. Navigate to the directory where the data was saved in Step 1 for all the following processes. This needs a launch file.
+### 2) Process the map data. Navigate to the directory where the data was saved in Step 1 for all the following processes. This needs a launch file.
 
-  i) Turn on the ROS core
+  #### i) Turn on the ROS core
 
   `$ roscore`
 
-  ii) Set the sim time param
+  #### ii) Set the sim time param
 
   `$ rosparam set use_sim_time true`
 
-  iii) Turn on gmapping
+  #### iii) Turn on gmapping
 
   `$ rosrun gmapping slam_gmapping scan:=<laserscan> _odom_frame:=odom`
 
-  iv) Now turn on rosbag and wait, it should tell you how long
+  #### iv) Now turn on rosbag and wait, it should tell you how long
 
   `$ rosbag play --clock <mapname>.bag`
 
-  v) Once that is finished now you can save the map
+  #### v) Once that is finished now you can save the map
 
   `$ rosrun map_server map_saver -f <mapname>``
 
-3) Now you can close all processes, you should have a map call '<mapname>.pgm'. Try to use the map to navigate with AMCL.
+### 3) Now you can close all processes, you should have a map call '<mapname>.pgm'. Try to use the map to navigate with AMCL.
 
-  i) Turn on the navigation
+  #### i) Turn on the navigation
 
   $ roslaunch lx_2dnav lx_navigate.launch map:=<mapname>
 
-  ii) Now on a remote computer turn on rviz so you can drive the robot
+  #### ii) Now on a remote computer turn on rviz so you can drive the robot
 
 
   `$ roslaunch lx_navigation lx_navigation.launch robot_ip:=<robotip> map:<mapname>`
@@ -73,7 +73,8 @@ Replace these things:
   `$ roslaunch lx_control lx_control.launch robot_ip:=<robotip> control_ip:<remoteip>`
 
 
-  4) Here is an example with the LX - tested with on 02/14/2020
+
+### 4) Here is an example of the full workflow with the LX - tested with on 02/14/2020
 1) make a map with the LX again, a clean one hopefully.
 
 i) `ssh thill@robot$ roslaunch lx_2dnav lx_drive.launch`
