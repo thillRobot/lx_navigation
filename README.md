@@ -5,7 +5,7 @@ This is a ROS package for NAVIGATION for the Pioneer LX Robot.
 You need a map to navigate. Unless you are using explore.
 Here is how to Make a Map with LX, ROS and gmapping.
 
-Replace these things:
+Definitions:
 
 ```
 <laserscan> your laser topic name
@@ -16,7 +16,7 @@ Replace these things:
 <remotecomputer> computer name of the control computer
 ```
 
-### Making a map
+### Making a map with the LX Robot
 #### 1) Record the Laser data with a robot to make a map.
 
   ##### i)  Turn on the navigation and mapping nodes
@@ -87,8 +87,8 @@ Replace these things:
 
 `$ roscore`
 
-`$ rosparam set use_sim_time true
-`
+`$ rosparam set use_sim_time true`
+
 `$ rosrun gmapping slam_gmapping scan:=/RosAria/S3Series_1_laserscan _odom_frame:=odom`
 
 `$ rosbag play --clock labmap.bag`
@@ -99,12 +99,11 @@ Replace these things:
 `
 ##### NOW YOU CAN CLOSE ALL PROCESSES, you should have a map called 'labmap.pgm'
 
-##### Use the map to navigate with AMCL
+### NAVIGATION using a map with the LX Robot
 
-`$ roslaunch lx_2dnav lx_config.launch` These are not up to date
+#### Turn on NAVIGATION on the Robot
 
-`$ 3) roslaunch lx_2dnav lx_move_base.launch`
+`$ roslaunch lx_navigation lx_navigation.launch map:=bh0_map0 `
 
-##### now turn on rviz remotely
-
-`$ roslaunch lx_control lx_control.launch`
+#### now turn on rviz on the remote computer
+`$ roslaunch lx_control lx_control.launch robot_ip:=10.104.66.16 control_ip:10.104.66.33`
