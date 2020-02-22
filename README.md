@@ -6,13 +6,14 @@ You need a map to navigate. Unless you are using explore.
 Here is how to Make a Map with LX, ROS and gmapping.
 
 Replace these things:
-'
+
+'''
 <laserscan> your laser topic name
 <mapname> what you want you map to be called
 <robotip> IP address of the robot
 <remoteip> computer name of the control computer
 <remotecomputer> computer name of the control computer
-'
+'''
 However, some of these commands are specific to the robot (LX)
 
 1) Record the Laser data with a robot to make a map.
@@ -79,7 +80,7 @@ below tested with lx on 02/14/2020
 
 i) ssh thill@robot$ roslaunch lx_2dnav lx_drive.launch
 
-IN A NEW TERMINAL			
+IN A NEW TERMINAL      
 
 ii) ssh thill@robot$ cd ~/ttu_ros
 $ rosbag record -O labmap /RosAria/S3Series_1_laserscan /tf
@@ -87,7 +88,7 @@ $ rosbag record -O labmap /RosAria/S3Series_1_laserscan /tf
 Now, starting at the origin record a map using keyboard drive
 
 
--> CLOSE BOTH PROCESSES		
+-> CLOSE BOTH PROCESSES    
 
 -> $ roscore
 
