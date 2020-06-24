@@ -1,7 +1,7 @@
 <launch>
 
   <param name="param" value="$(arg map)"/>
-  <env name="ROS_IP" value="10.104.66.16"/>
+  <env name="ROS_IP" value="10.104.66.9"/>
 
   <!-- TURN ON THE ROBOT-->
   <node
