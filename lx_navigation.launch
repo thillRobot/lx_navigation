@@ -1,7 +1,12 @@
 <launch>
 
+  <!-- Get command line parameters -->
   <param name="param" value="$(arg map)"/>
-  <env name="ROS_IP" value="10.104.66.16"/>
+  <param name="param" value="$(arg robot_ip)"/>
+ 
+  <!-- Set environment variables -->
+  <env name="ROS_IP" value="$(arg robot_ip)"/>
+  
 
   <!-- TURN ON THE ROBOT-->
   <node
