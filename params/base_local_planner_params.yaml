@@ -46,7 +46,7 @@ TebLocalPlannerROS:
  costmap_converter_plugin: ""
  costmap_converter_spin_thread: True
  costmap_converter_rate: 5
- inflation_dist: 0.05
+ inflation_dist: 0.5
 
  # Optimization
 
