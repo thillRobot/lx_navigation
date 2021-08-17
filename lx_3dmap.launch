@@ -61,7 +61,7 @@
   <!--	<arg name="map_file" default="$(find lx_navigation)/maps/hall3map.yaml"/> -->
 
   <!-- MAP SERVER -->
-  <node name="map_server" pkg="map_server" type="map_server" args="$(find lx_navigtion)/maps/$(arg map).yaml" />
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find lx_navigation)/maps/$(arg map).yaml" />
 
   <!-- MCL LOCALIZATION -->
   <node name="amcl" pkg="amcl" type="amcl" args="scan:=/RosAria/S3Series_1_laserscan" />
@@ -73,12 +73,12 @@
 	  <param name="base_global_planner" value="global_planner/GlobalPlanner"/>
 	  <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS"/>
 
-      <!-- <rosparam file="$(find lx_navigtion)/params/teb_planner_params.yaml" command="load" ns="base_local_planner" /> -->
+      <!-- <rosparam file="$(find lx_navigation)/params/teb_planner_params.yaml" command="load" ns="base_local_planner" /> -->
       <rosparam file="$(find lx_navigation)/params/global_planner_params.yaml" command="load" ns="base_global_planner" />
 
       <rosparam file="$(find lx_navigation)/params/costmap_common_params.yaml" command="load" ns="global_costmap" />
       <rosparam file="$(find lx_navigation)/params/costmap_common_params.yaml" command="load" ns="local_costmap" />
-      <rosparam file="$(find lx_navigtaion)/params/local_costmap_params.yaml" command="load" />
+      <rosparam file="$(find lx_navigation)/params/local_costmap_params.yaml" command="load" />
       <rosparam file="$(find lx_navigation)/params/global_costmap_params.yaml" command="load" />
 
       <rosparam file="$(find lx_navigation)/params/base_local_planner_params.yaml" command="load" />
