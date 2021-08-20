@@ -1,0 +1,38 @@
+<launch>
+  <!-- This is now done in ~/.bashrc -->
+  <!-- <env name="ROS_IP" value="10.100.66.99"/> -->
+  <env name="ROS_IP" value="10.124.66.14"/>
+
+  <node
+    name="RosAria"
+    pkg="rosaria"
+    type="RosAria"
+    respawn="false"
+    output="screen"
+    args="/RosAria/cmd_vel:=cmd_vel">
+    args="/RosAria/S3Series_1_laserscan:=scan">
+    <param name="port" value="/dev/ttyUSB0" />
+    <param name="baud" value="57600" />
+    <param name="publish_aria_lasers" value="true" />
+  </node>
+
+  <node
+    pkg="tf"
+    type="static_transform_publisher"
+    name="link2_broadcaster"
+    args="0.0 0.0 0.0 0.0 0.0 0.0 map odom 100"
+  />
+
+  <node
+    pkg="lx_navigation"
+    name="tf_broadcaster"
+    type="tf_broadcaster"
+  />
+
+  <node
+    pkg="kinect_aux"
+    name="kinect_aux_node"
+    type="kinect_aux_node"
+  />
+
+</launch>

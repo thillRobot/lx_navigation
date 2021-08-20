@@ -1,0 +1,34 @@
+<launch>
+    <env name="ROS_MASTER_URI" value="http://10.104.66.40:11311"/>
+    <env name="ROS_HOSTNAME" value="10.104.66.40" />
+    	
+    <node
+	name="RosAria"
+        pkg="rosaria"
+        type="RosAria"
+        respawn="false"
+        output="screen"
+	args="/RosAria/cmd_vel:=cmd_vel">
+	args="/RosAria/S3Series_1_laserscan:=scan">
+        <param name="port" value="/dev/ttyUSB0" />
+	<param name="baud" value="57600" />
+        <param name="publish_aria_lasers" value="true" />
+    </node>
+    <node
+        pkg="tf"
+        type="static_transform_publisher"
+        name="link2_broadcaster"
+        args="0.0 0.0 0.0 0.0 0.0 0.0 map odom 100"
+    />
+	<node
+        pkg="lx_navigation"
+        name="tf_broadcaster"
+        type="tf_broadcaster"
+    />
+    <node
+        pkg="teleop_twist_keyboard"
+        name="teleop_twist_keyboard"
+        type="teleop_twist_keyboard.py"
+    />
+
+</launch>

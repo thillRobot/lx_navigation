@@ -5,23 +5,25 @@ robot_radius: 0.25
 #raytrace_range: 0.5
 
 plugins:
-    - {name: static_map,       type: "costmap_2d::StaticLayer"}
+    - {name: static_layer,        type: "costmap_2d::StaticLayer"}
     - {name: obstacles,        type: "costmap_2d::VoxelLayer"}
-    - {name: inflation,        type: "costmap_2d::InflationLayer"}
+    - {name: inflation_layer,        type: "costmap_2d::InflationLayer"}
 
-static_map:
-    observation_sources: laser_scan_sensor #point_cloud_sensor
-    laser_scan_sensor: {sensor_frame: laser_frame, data_type: LaserScan, topic: scan_filtered, marking: false, clearing: true}
-   # point_cloud_sensor: {sensor_frame: sonar_frame, data_type: PointCloud, topic: RosAria/sonar, marking: true, clearing: false}
-    obstacle_range: 0.35
+publish_frequency: 1.0
+
+static_layer:
+    observation_sources: laser_scan_sensor
+    laser_scan_sensor: {sensor_frame: laser_frame, data_type: LaserScan, topic: scan_filtered, marking: true, clearing: true}
+    obstacle_range: 0.5
     raytrace_range: 0.5
 
 obstacles:
-    observation_sources: laser_scan_sensor point_cloud_sensor
+    enabled: true
+    observation_sources: laser_scan_sensor #point_cloud_sensor
     laser_scan_sensor:  {sensor_frame: laser_frame, data_type: LaserScan, topic: scan_filtered, marking: true, clearing: true}
-    point_cloud_sensor: {sensor_frame: sonar_frame, data_type: PointCloud, topic: RosAria/sonar, marking: true, clearing: true}
-    obstacle_range: 0.35
-    raytrace_range: 1.5
+    #point_cloud_sensor: {sensor_frame: sonar_frame, data_type: PointCloud, topic: RosAria/sonar, marking: true, clearing: true}
+    obstacle_range: 0.5
+    raytrace_range: 0.5
 
-inflation:
+inflation_layer:
     inflation_radius: 0.5

@@ -1,7 +1,7 @@
 TebLocalPlannerROS:
 
  odom_topic: /Rosaria/pose
- map_frame: /map
+ map_frame: map
 
  # Trajectory
 
