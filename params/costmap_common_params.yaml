@@ -6,24 +6,39 @@ robot_radius: 0.25
 
 plugins:
     - {name: static_layer,        type: "costmap_2d::StaticLayer"}
-    - {name: obstacles,        type: "costmap_2d::VoxelLayer"}
+    - {name: obstacle_layer,        type: "costmap_2d::VoxelLayer"}
     - {name: inflation_layer,        type: "costmap_2d::InflationLayer"}
 
 publish_frequency: 1.0
 
 static_layer:
+    obstacle_range: 0.5
+    raytrace_range: 0.8    
     observation_sources: laser_scan_sensor
-    laser_scan_sensor: {sensor_frame: laser_frame, data_type: LaserScan, topic: scan_filtered, marking: true, clearing: true}
+    laser_scan_sensor: 
+        sensor_frame: laser_frame
+        data_type: LaserScan
+        topic: scan_filtered
+        marking: true
+        clearing: true
+   
+obstacle_layer:
     obstacle_range: 0.5
-    raytrace_range: 0.5
-
-obstacles:
-    enabled: true
-    observation_sources: laser_scan_sensor #point_cloud_sensor
-    laser_scan_sensor:  {sensor_frame: laser_frame, data_type: LaserScan, topic: scan_filtered, marking: true, clearing: true}
-    #point_cloud_sensor: {sensor_frame: sonar_frame, data_type: PointCloud, topic: RosAria/sonar, marking: true, clearing: true}
-    obstacle_range: 0.5
-    raytrace_range: 0.5
+    raytrace_range: 0.8
+    observation_sources: laser_scan_sensor point_cloud_sensor
+    laser_scan_sensor:  
+        sensor_frame: laser_frame
+        data_type: LaserScan
+        # topic: scan_filtered # the filtered scan does not mark the obstacle layer 
+        topic: RosAria/S3Series_1_laserscan # the original scan is marking and clearing
+        marking: true
+        clearing: true
+    point_cloud_sensor: 
+        sensor_frame: sonar_frame
+        data_type: PointCloud
+        topic: RosAria/sonar
+        marking: true   
+        clearing: true
 
 inflation_layer:
     inflation_radius: 0.5
