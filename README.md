@@ -21,7 +21,7 @@ Definitions:
 
   ##### i)  Turn on the navigation and mapping nodes
 
-  `$ roslaunch lx_2dnav lx_map.launch`
+  `$ roslaunch lx_navigation lx_map.launch`
 
   ##### ii) Change to the directory where you want to save the data
 
@@ -76,7 +76,7 @@ Definitions:
 
 ##### urn on the robot
 
-`ssh thill@robot$ roslaunch lx_2dnav lx_drive.launch`
+`ssh thill@robot$ roslaunch lx_navigation lx_drive.launch`
 
 ##### IN A NEW TERMINAL start recording data   
 
