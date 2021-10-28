@@ -12,8 +12,8 @@ plugins:
 publish_frequency: 1.0
 
 static_layer:
-    obstacle_range: 0.4
-    raytrace_range: 0.6    
+    obstacle_range: 1.0
+    raytrace_range: 1.2    
     observation_sources: laser_scan_sensor
     laser_scan_sensor: 
         sensor_frame: laser_frame
@@ -23,9 +23,9 @@ static_layer:
         clearing: true
    
 obstacle_layer:
-    obstacle_range: 0.4
-    raytrace_range: 0.6
-    observation_sources: laser_scan_sensor point_cloud_sensor
+    obstacle_range: 1.0
+    raytrace_range: 1.2
+    observation_sources: laser_scan_sensor # point_cloud_sensor
     laser_scan_sensor:  
         sensor_frame: laser_frame
         data_type: LaserScan
@@ -33,12 +33,12 @@ obstacle_layer:
         topic: RosAria/S3Series_1_laserscan # the original scan is marking and clearing
         marking: true
         clearing: true
-    point_cloud_sensor: 
-        sensor_frame: sonar_frame
+    point_cloud_sensor: # the sonar sensor is publishing all zeros 
+        sensor_frame: sonar
         data_type: PointCloud
         topic: RosAria/sonar
-        marking: true   
-        clearing: true
+        marking: false # turn of marking and clearing until sonar data is working  
+        clearing: false
 
 inflation_layer:
     inflation_radius: 0.15
