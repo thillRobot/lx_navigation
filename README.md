@@ -2,8 +2,8 @@
 This is a ROS package for 2D navigation with the Pioneer LX Robot. Adept might be gone, but the robots are still here...
 
 ## Supporting Packages
-- [lx_control](https://github.com/thillRobot/lx_control) - contains launch files for control computer (base station), future home of GUI? 
-
+- [lx_control](https://github.com/thillRobot/lx_control) - package for control computer (base station), future home of GUI?, adaptive-manual-drive? 
+- [lx_vision](https://github.com/thillRobot/lx_vision) - package for cameras and computer vision for the robot
 
 You need a map to navigate. Unless you are using explore.
 Here is how to Make a Map with LX, ROS and gmapping.
