@@ -109,4 +109,4 @@ Definitions:
 `$ roslaunch lx_navigation lx_navigation.launch map:=bh0_map0 `
 
 #### now turn on rviz on the remote computer
-`$ roslaunch lx_control lx_control.launch robot_ip:=10.104.66.16 control_ip:10.104.66.33`
+`$ roslaunch lx_control lx_control.launch robot_ip:=X.X.X.X control_ip:X.X.X.X`
