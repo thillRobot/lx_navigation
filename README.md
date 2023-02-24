@@ -106,7 +106,7 @@ Definitions:
 
 #### Turn on NAVIGATION on the Robot
 
-`$ roslaunch lx_navigation lx_navigation.launch map:=bh0_map0 `
+`$ roslaunch lx_navigation lx_navigation.launch map:=bh124_map1 robot_ip:=X.X.X.X`
 
 #### now turn on rviz on the remote computer
 `$ roslaunch lx_control lx_control.launch robot_ip:=X.X.X.X control_ip:X.X.X.X`
