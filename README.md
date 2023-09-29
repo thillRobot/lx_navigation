@@ -77,29 +77,37 @@ Definitions:
 
 #### 4) Here is an example of the full workflow with the LX - tested with on 02/14/2020
 
-##### urn on the robot
+##### Turn on the robot. 
+This can be done locally or through SSH. Local is nice if you are making a large map with keyboard.
 
-`ssh thill@robot$ roslaunch lx_navigation lx_drive.launch`
+`roslaunch lx_navigation lx_drive.launch robot_ip:=X.X.X.X`
 
 ##### IN A NEW TERMINAL start recording data   
+Change to the directory that the map bag file will be saved. The map can be moved afterward
 
-`ssh thill@robot$ cd ~/ttu_ros`
-`$ rosbag record -O labmap /RosAria/S3Series_1_laserscan /tf`
+`cd ~/lx_ros/src/lx_navigation/maps`
+`rosbag record -O bh1_map0 /RosAria/S3Series_1_laserscan /tf`
 
-##### Now, starting at the origin record a map using keyboard drive. When you are done collecting date, close both processes then process the map.
+##### Starting at the origin record a map using keyboard drive. 
+When you are done collecting date, close both processes then process the map.
+Turn on roscore
+`roscore`
 
-`$ roscore`
+In a separate terminal set the sim time param, then run gmapping in the same terminal
 
-`$ rosparam set use_sim_time true`
+`rosparam set use_sim_time true`
+`rosrun gmapping slam_gmapping scan:=/RosAria/S3Series_1_laserscan _odom_frame:=odom`
 
-`$ rosrun gmapping slam_gmapping scan:=/RosAria/S3Series_1_laserscan _odom_frame:=odom`
+In a separate terminal play the bag file to compile the scan data
+`rosbag play --clock bh1_map0.bag`
 
-`$ rosbag play --clock labmap.bag`
+##### Wait for the processing to take place. 
+You should see an esitmate of how long it will take. When complete, run the map saver in the same terminal as the rosbag command
 
-##### Wait for the processing to take place. It will give you an esitmate of how long it will take
+`rosrun map_server map_saver -f bh1_map0`
 
-`$ rosrun map_server map_saver -f labmap
-`
+
+
 ##### NOW YOU CAN CLOSE ALL PROCESSES, you should have a map called 'labmap.pgm'
 
 ### NAVIGATION using a map with the LX Robot
