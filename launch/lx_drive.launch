@@ -1,7 +1,13 @@
 <launch>
-    <env name="ROS_MASTER_URI" value="http://10.104.66.0:11311"/>
-    <env name="ROS_HOSTNAME" value="10.104.66.0" />
-    	
+   <!-- <env name="ROS_MASTER_URI" value="http://10.104.66.0:11311"/> -->
+   <!--  <env name="ROS_HOSTNAME" value="10.104.66.0" /> -->
+   
+   <!-- Get command line parameters -->
+   <param name="param" value="$(arg robot_ip)"/>
+
+   <!-- Set environment variables -->
+   <env name="ROS_IP" value="$(arg robot_ip)"/>
+ 	
     <node
 	name="RosAria"
         pkg="rosaria"
@@ -14,17 +20,20 @@
 	<param name="baud" value="57600" />
         <param name="publish_aria_lasers" value="true" />
     </node>
+    
     <node
         pkg="tf"
         type="static_transform_publisher"
         name="link2_broadcaster"
         args="0.0 0.0 0.0 0.0 0.0 0.0 map odom 100"
     />
-	<node
+   
+    <node
         pkg="lx_navigation"
         name="tf_broadcaster"
         type="tf_broadcaster"
     />
+    
     <node
         pkg="teleop_twist_keyboard"
         name="teleop_twist_keyboard"
