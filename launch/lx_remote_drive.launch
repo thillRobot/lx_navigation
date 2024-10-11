@@ -1,7 +1,7 @@
 <launch>
 
-  <env name="ROS_MASTER_URI" value="http://10.104.66.40:11311"/>
-  <env name="ROS_HOSTNAME" value="10.104.66.40" />
+ <!-- <env name="ROS_MASTER_URI" value="http://10.104.66.40:11311"/> -->
+ <!-- <env name="ROS_HOSTNAME" value="10.104.66.40" /> -->
 
   <node
     name="RosAria"

@@ -1,7 +1,7 @@
 <launch>
  
   <!--  <master auto="start"/> -->
-  <env name="ROS_IP" value="192.168.43.250"/>		
+  <env name="ROS_IP" value="10.143.64.136"/>		
   <!--  <param name="/use_sim_time" value="true" /> --> <!-- This line causes an error -->	 
     
   <!-- TURN ON THE ROBOT --> 	
@@ -27,7 +27,7 @@
 		
   <!-- USE A LASER FILTER --> 
   <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter">
-    <rosparam command="load" file="$(find lx_2dnav)/params/laser_config.yaml" />
+    <rosparam command="load" file="$(find lx_navigation)/params/laser_config.yaml" />
     <remap from="scan" to="/RosAria/S3Series_1_laserscan" />
   </node>
 
@@ -41,13 +41,13 @@
     <param name="base_global_planner" value="global_planner/GlobalPlanner"/>
     <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS"/> 
 
-    <rosparam file="$(find lx_2dnav)/params/costmap_common_params.yaml" command="load" ns="global_costmap" />
-    <rosparam file="$(find lx_2dnav)/params/costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find lx_2dnav)/params/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find lx_2dnav)/params/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find lx_navigation)/params/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find lx_navigation)/params/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find lx_navigation)/params/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find lx_navigation)/params/global_costmap_params.yaml" command="load" />
 
-    <rosparam file="$(find lx_2dnav)/params/global_planner_params.yaml" command="load" ns="base_global_planner" />
-    <rosparam file="$(find lx_2dnav)/params/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find lx_navigation)/params/global_planner_params.yaml" command="load" ns="base_global_planner" />
+    <rosparam file="$(find lx_navigation)/params/base_local_planner_params.yaml" command="load" />
   </node>
 
   <!-- TURN ON THE MAPPING NODE -->
