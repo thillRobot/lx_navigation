@@ -22,6 +22,7 @@ void statusCB(const actionlib_msgs::GoalStatusArray::ConstPtr& msg)
     } 
 } 
 
+// extremely crude function for blocking 'pause()'
 void pause(float seconds){
   float loop_time=0;
   float loop_freq=100.0;
@@ -33,7 +34,6 @@ void pause(float seconds){
     loop_rate.sleep();
     loop_time=loop_time+1/loop_freq;      
   }    
-  //ROS_INFO("status: %i",status);
 }
 
 int main(int argc, char **argv)
@@ -48,29 +48,33 @@ int main(int argc, char **argv)
     ros::Subscriber sub = n.subscribe("/move_base/status", 1000, statusCB);
 
     // goal points       {{x1,y1,theta1},{x2,y2,theta2},...}
-    float goallist[3][3]={{-2.0,10.0,0.0},{-2.0,15.0,0.7},{-2.0,20.0,1.5}};
+    float goallist[6][3]={{-2.0,10.0,0.0},
+                          {-2.0,15.0,0.7},
+                          {-2.0,20.0,1.5},
+                          {-2.0,25.0,1.5},
+                          {-2.0,30.0,1.5},
+                          {-2.0,35.0,1.5}};  
 
-    tf2::Quaternion q;
+    int num_goals=6;
+  
+tf2::Quaternion q;
 
     // int count = 0;   
     int goal_idx=0;
     bool goal_reached=false;   
 
-    while (goal_idx<3)
+    while (goal_idx<num_goals)
     {
     
-      //move_base_msgs::MoveBaseActionGoal agmsg;
       move_base_msgs::MoveBaseGoal goal_msg;
       
       geometry_msgs::PoseStamped pose;
       pose.header.stamp=ros::Time::now();
       pose.header.frame_id="map";
           
-      
       pause(2.0);      
 
-      // publish the goal_idxth goal, yes I said it... 
-      
+      // publish the goal_idxth goal, yes I said it...  
       pose.header.stamp=ros::Time::now();
       pose.pose.position.x = goallist[goal_idx][0];
       pose.pose.position.y = goallist[goal_idx][1];
@@ -80,34 +84,29 @@ int main(int argc, char **argv)
       
       goal_msg.target_pose=pose;
 
-  
+      ROS_INFO("publishing goal %i, status: %i", goal_idx, status); 
       goal_publisher.publish(goal_msg);
       goal_reached=false; 
       pause(2.0);
       ros::spinOnce();  
       
-      //ROS_INFO("Goal id: %s sent, status: %i",id,status);
-      ROS_INFO("waiting for goal to be processed");
+      ROS_INFO("waiting for goal %i to be processed, status: %i", goal_idx, status);
       while ((status==0)){
         ros::spinOnce();  
-      }         
-  
+      }          
+      ROS_INFO("navigating to goal %i, status: %i", goal_idx, status);
+      
       // wait for the goal to be reached
-      //while (status!=2&&status!=3){
-      ROS_INFO("navigating to goal, status: %i", status);
-      ROS_INFO("waiting for goal to be reached");
+      ROS_INFO("waiting for goal %i to be reached, status: %i", goal_idx, status);
       while(status!=3){
         ros::spinOnce();
       }
-      goal_reached=true;
-
-      //while (status==1){
-      //  ros::spinOnce();
-      // }
-      ROS_INFO("status: %i\n", status);
-
-      goal_idx++;
+      ROS_INFO("goal %i reached, status: %i\n", goal_idx, status);
       
+      goal_reached=true;
+      goal_idx++;
+      pause(5);      
+  
       loop_rate.sleep();
       
     }
