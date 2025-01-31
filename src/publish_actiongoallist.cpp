@@ -43,7 +43,7 @@ int main(int argc, char **argv)
     ros::Subscriber sub = n.subscribe("/move_base/status", 1000, statusCB);
 
     // goal point liactionlib_msgs/GoalIDst {{x1,y1,theta1},{x2,y2,theta2},...}
-    float goallist[3][3]={{-2.0,20.0,0.0},{-2.0,15.0,0.7},{-2.0,10.0,1.5}};
+    float goallist[4][3]={{1.0,1.0,0.0},{2.0,1.0,0.7},{2.0,1.0,1.5},{4.0,3.0,1.5}};
 
     tf2::Quaternion q;
 
@@ -51,7 +51,7 @@ int main(int argc, char **argv)
     int goal_idx=0;
     bool goal_reached=false;   
 
-    while (goal_idx<3)
+    while (goal_idx<4)
     {
     
       move_base_msgs::MoveBaseActionGoal agmsg;
@@ -118,13 +118,16 @@ int main(int argc, char **argv)
         cancel_publisher.publish(idmsg);
        
          // wait for canceling to happen
-        loop_time=0;
-        ROS_INFO("waiting for cancel to process, status: %i", status);
-        while (status!=2&&loop_time<2){
-          loop_rate.sleep();
-          loop_time=loop_time+1/loop_freq;      
+        //loop_time=0;
+        //ROS_INFO("waiting for cancel to process, status: %i", status);
+        //while (status!=2&&loop_time<2){
+        int k=0;
+	while(k<10){
+	//  loop_rate.sleep();
+        //  loop_time=loop_time+1/loop_freq;      
           
           ros::spinOnce();
+	  k++;
         }
         printf("status: %i",status);
         goal_idx++;
