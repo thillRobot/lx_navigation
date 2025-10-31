@@ -66,16 +66,6 @@ int main(int argc, char **argv)
     
     while (goal_idx<num_goals)
     {
-    
-      //float loop_time=0;
-      // wait for 3 seconds, there is definitely a better way...
-     // ROS_INFO("waiting to send goal, status: %i", status);
-     // while ((loop_time<3)){
-     //   loop_rate.sleep();
-     //   loop_time=loop_time+1/loop_freq;      
-     //   ros::spinOnce();  
-     // }    
-     // ROS_INFO("status: %i",status);
       
       move_base_msgs::MoveBaseActionGoal agmsg;
       move_base_msgs::MoveBaseGoal goal;
