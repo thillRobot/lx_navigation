@@ -41,8 +41,12 @@ int main(int argc, char **argv)
     ros::Subscriber sub = n.subscribe("/move_base/status", 1000, statusCB);
 
     // goal point liactionlib_msgs/GoalIDst {{x1,y1,theta1},{x2,y2,theta2},...}
-    float goallist[4][3]={{1.0,1.0,0.0},{3.0,3.0,0.7},{-4.0,3.0,1.5},{-4.0,0.0,1.5}};
-    int num_goals=4;
+    float goallist[5][3]={{1.0,1.0,0.0},
+	    	          {3.0,3.0,0.7},
+			  {-1.0,0.0,1.5},
+			  {-1.5,-7.0,1.5},
+			  {6.5,-8.0,1.5}};
+    int num_goals=5;
   
     tf2::Quaternion q;
 
