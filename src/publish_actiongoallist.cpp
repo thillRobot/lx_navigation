@@ -24,10 +24,10 @@ void statusCB(const actionlib_msgs::GoalStatusArray::ConstPtr& msg)
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "publish_goallist");
+    ros::init(argc, argv, "publish_actiongoallist");
     ros::NodeHandle n;
-    ros::Publisher goal_publisher =
-    n.advertise<geometry_msgs::PoseStamped>("/move_base_simple/goal", 1000);
+    //ros::Publisher goal_publisher =
+    //n.advertise<geometry_msgs::PoseStamped>("/move_base_simple/goal", 1000);
     ros::Publisher cancel_publisher =
     n.advertise<actionlib_msgs::GoalID>("/move_base/cancel", 1000);
     ros::Publisher actiongoal_publisher =
@@ -38,12 +38,10 @@ int main(int argc, char **argv)
     //msg.header.stamp=ros::Time::now();
     //msg.header.frame_id="map";
 
-
-
     ros::Subscriber sub = n.subscribe("/move_base/status", 1000, statusCB);
 
     // goal point liactionlib_msgs/GoalIDst {{x1,y1,theta1},{x2,y2,theta2},...}
-    float goallist[3][3]={{-2.0,20.0,0.0},{-2.0,15.0,0.7},{-2.0,10.0,1.5}};
+    float goallist[4][3]={{1.0,1.0,0.0},{3.0,1.0,0.7},{3.0,3.0,1.5},{1.0,3.0,1.5}};
 
     tf2::Quaternion q;
 
@@ -51,7 +49,7 @@ int main(int argc, char **argv)
     int goal_idx=0;
     bool goal_reached=false;   
 
-    while (goal_idx<3)
+    while (goal_idx<4)
     {
     
       move_base_msgs::MoveBaseActionGoal agmsg;
@@ -64,7 +62,7 @@ int main(int argc, char **argv)
           
       float loop_time=0;
       // wait for 3 seconds, there is definitely a better way...
-      ROS_INFO("waiting to send goal, status: %i", status);
+      ROS_INFO("waiting to send goal %i, status: %i",goal_idx, status);
       while ((loop_time<3)){
         loop_rate.sleep();
         loop_time=loop_time+1/loop_freq;      
@@ -102,8 +100,8 @@ int main(int argc, char **argv)
   
       // wait for the goal to be reached
       //while (status!=2&&status!=3){
-      ROS_INFO("navigating to goal, status: %i", status);
-      ROS_INFO("waiting for goal to be reached");
+      ROS_INFO("navigating to goal %i, status: %i",goal_idx, status);
+      ROS_INFO("waiting for goal %i to be reached", goal_idx);
       while (status==1){
         ros::spinOnce();
       }
@@ -111,20 +109,23 @@ int main(int argc, char **argv)
 
       // check if goal has been reached or canceled
       if (status==2){
-        ROS_INFO("goal canceled, status: %i", status);    
+        ROS_INFO("goal %i canceled, status: %i", goal_idx, status);    
       }else if (status==3){
-        ROS_INFO("goal reached! status: %i", status);   
-        ROS_INFO("canceling goal");        
+        ROS_INFO("goal %i reached! status: %i", goal_idx, status);   
+        ROS_INFO("canceling goal %i", goal_idx);        
         cancel_publisher.publish(idmsg);
        
          // wait for canceling to happen
-        loop_time=0;
-        ROS_INFO("waiting for cancel to process, status: %i", status);
-        while (status!=2&&loop_time<2){
-          loop_rate.sleep();
-          loop_time=loop_time+1/loop_freq;      
+        //loop_time=0;
+        //ROS_INFO("waiting for cancel to process, status: %i", status);
+        //while (status!=2&&loop_time<2){
+        int k=0;
+	while(k<10){
+	//  loop_rate.sleep();
+        //  loop_time=loop_time+1/loop_freq;      
           
           ros::spinOnce();
+	  k++;
         }
         printf("status: %i",status);
         goal_idx++;

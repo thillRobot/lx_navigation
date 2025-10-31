@@ -11,10 +11,10 @@ int main(int argc, char** argv){
 
   while(n.ok()){
 
-    	broadcaster.sendTransform(
-      tf::StampedTransform(
-        tf::Transform(tf::Quaternion(0, 0, 0, 1), tf::Vector3(0.25, 0.0, 0.2)),
-        ros::Time::now(),"base_link", "laser_frame"));
+  //  	broadcaster.sendTransform(
+  //    tf::StampedTransform(
+  //      tf::Transform(tf::Quaternion(0, 0, 0, 1), tf::Vector3(0.25, 0.0, 0.2)),
+  //      ros::Time::now(),"base_link", "laser_frame"));
 
       broadcaster.sendTransform(
       tf::StampedTransform(
